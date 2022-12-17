@@ -1,12 +1,6 @@
 #include "Creator.h"
 
 
-void Create::outAct() {
-	Element::outAct();
-	activateNextElement(createNewTask());
-	tnext = tcurr + calculateDelay(nullptr);
-}
-
 Create::Create(std::string nameOfElement, RandGenerator* delayGenerator, Task* task)
 	:Element(nameOfElement, delayGenerator)
 {
@@ -20,6 +14,19 @@ Create::Create(std::string nameOfElement, RandGenerator* delayGenerator, std::ve
 	state = IN_PROGRESS;
 	tnext = 0.0;
 	this->distribution = distribution;
+}
+
+Create::~Create()
+{
+	for (auto pair : distribution) {
+		delete pair.first;
+	}
+}
+
+void Create::outAct() {
+	Element::outAct();
+	activateNextElement(createNewTask());
+	tnext = tcurr + calculateDelay(nullptr);
 }
 
 Task* Create::createNewTask()

@@ -7,6 +7,13 @@ Model::Model(const std::vector<Element*>& elements) {
 	event = nullptr;
 }
 
+Model::~Model()
+{
+	for (auto e : list) {
+		delete e;
+	}
+}
+
 void Model::simulate(double time) {
 	while (tcurr <= time) {
 		tnext = DBL_MAX;

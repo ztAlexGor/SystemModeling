@@ -2,6 +2,13 @@
 
 int Element::nextId = 0;
 
+Element::~Element()
+{
+	if (delayGenerator)delete delayGenerator;
+	//for (auto e : nextElements)delete e;
+	//if (prevElement)delete prevElement;
+}
+
 Element::Element() :statistics("element" + std::to_string(nextId))
 {
 	delayGenerator = new Uniform(10, 10);

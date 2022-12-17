@@ -1,6 +1,12 @@
 #include "WorkGroup.h"
 
 
+WorkGroup::~WorkGroup()
+{
+	for (auto p : processes)delete p;
+	for (auto e : queue)delete e;
+}
+
 WorkGroup::WorkGroup(std::vector<Process*> processes, int maxQueue) : maxQueue(maxQueue)
 {
 	for (auto e : processes) {

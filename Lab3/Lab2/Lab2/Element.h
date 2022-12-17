@@ -23,6 +23,7 @@ protected:
 	double tcurr, tnext;
 	Info statistics;
 public:
+	virtual ~Element();
 	Element();
 	Element(std::string nameOfElement, RandGenerator* delayGenerator);
 	RandGenerator* getDelayGenerator();

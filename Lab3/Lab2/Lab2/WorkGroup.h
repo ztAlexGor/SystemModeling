@@ -14,6 +14,7 @@ private:
 	int (*changeQueueFunc)(std::vector<Process*> processes, std::vector<Task*> queue);
 
 public:
+	~WorkGroup();
 	WorkGroup(std::vector<Process*> processes, int maxQueue = INT_MAX);
 	void setQueue(std::vector<Task*> queue);
 	std::vector<Task*> getQueue();

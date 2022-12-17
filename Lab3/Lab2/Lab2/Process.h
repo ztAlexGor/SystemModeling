@@ -9,6 +9,7 @@ private:
 	int (*selectTaskFunc)(std::vector<Task*>);
 	std::function<int(std::vector<Task*>)> changeQueueFunc;
 public:
+	~Process();
 	Process();
 	Process(std::string nameOfElement, RandGenerator* delayGenerator, int maxQueue = INT_MAX);
 

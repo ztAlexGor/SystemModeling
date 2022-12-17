@@ -1,5 +1,13 @@
 #include "Transition.h"
 
+Transition::~Transition()
+{
+	while (!schedule.empty()) {
+		delete schedule.top().first;
+		schedule.pop();
+	}
+}
+
 Transition::Transition(std::string nameOfElement, RandGenerator* delayGenerator):
 	Element(nameOfElement, delayGenerator), schedule([](std::pair<Task*, double>left, std::pair<Task*, double>right)->bool {return left.second > right.second; }) {}
 

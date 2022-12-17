@@ -16,25 +16,19 @@ void testCreatorWithDistribution();
 void testTransitionCondition();
 void schemeFromLab2();
 
+void task_1_2();
+void task_3_4();
+void task_5_6();
+
+void lab2();
+void lab3();
 
 
 int main() {
 	srand(time(NULL));
 
-	std::cout << "Press 1 to choose the bank task and 2 to choose hospital" << std::endl;
-	int choice = _getch() - 48;
-	
-	if (choice == 1) {
-		bank_second_way();
-		//bank_first_way();
-	}
-	else if (choice == 2) {
-		hospital();
-	}
-	//testWorkGroup();
-	//test();
-	//hospital();
-	//testTransition();
+	lab2();
+	//lab3();
 }
 
 
@@ -143,7 +137,7 @@ void bank_second_way() {
 	list.push_back(wg);
 	Model model(list);
 
-	model.simulate(500.0);
+	model.simulate(50.0);
 }
 
 void hospital() {
@@ -155,15 +149,15 @@ void hospital() {
 
 
 	//admission department
-	CustomGenerator* delayGenerator = new CustomGenerator([](Task* task)->double {
+	auto delayFunction = [](Task* task)->double {
 		if (task->getType() == "1")return Exponential{ 15.0 }.generate();
 		if (task->getType() == "2")return Exponential{ 40.0 }.generate();
 		if (task->getType() == "3")return Exponential{ 30.0 }.generate();
 		throw "Unknown task type";
-		});
+		};
 
-	Process* doctor1 = new Process("DOCTOR1", delayGenerator, 0);
-	Process* doctor2 = new Process("DOCTOR2", delayGenerator, 0);
+	Process* doctor1 = new Process("DOCTOR1", new CustomGenerator(delayFunction), 0);
+	Process* doctor2 = new Process("DOCTOR2", new CustomGenerator(delayFunction), 0);
 
 	//int (*doctorSelectFunc)(std::vector<Task*>) = [](std::vector<Task*> queue) {
 	//	for (int i = 0; i < queue.size(); i++) {
@@ -269,7 +263,7 @@ void hospital() {
 	
 	Model model(list);
 
-	model.simulate(1000.0);
+	model.simulate(100.0);
 }
 
 void testWorkGroup() {
@@ -406,3 +400,84 @@ void schemeFromLab2() {
 	model.simulate(100.0);
 }
 
+
+
+
+void task_1_2()
+{
+	Create* c = new Create("CREATOR", new Exponential(5));
+	Process* p = new Process("PROCESSOR", new Exponential(5), 5);
+
+	c->addNextElement(p);
+
+	Model model(std::vector<Element*>{c, p});
+	model.simulate(1000.0);
+}
+
+void task_3_4() {
+	Create* c1 = new Create("CREATOR", new Exponential(4));
+	Process* p1 = new Process("PROCESSOR1", new Exponential(4));
+	Process* p2 = new Process("PROCESSOR2", new Exponential(3));
+	Process* p3 = new Process("PROCESSOR3", new Exponential(7));
+
+	p1->setMaxqueue(5);
+	p2->setMaxqueue(0);
+	p3->setMaxqueue(8);
+
+	c1->addNextElement(p1);
+	p1->addNextElement(p2);
+	p2->addNextElement(p3);
+
+	std::vector<Element*>list;
+	list.push_back(c1);
+	list.push_back(p1);
+	list.push_back(p2);
+	list.push_back(p3);
+	Model model(list);
+
+	model.simulate(2000.0);
+}
+
+
+void task_5_6() {
+	Create* c = new Create("CREATOR", new Exponential(3));
+
+	std::vector<Process*>p;
+	p.push_back(new Process("p1", new Exponential(5), 0));
+	p.push_back(new Process("p2", new Exponential(5), 0));
+
+	WorkGroup* w = new WorkGroup(p, 5);
+
+	c->addNextElement(w);
+
+	std::vector<Element*>el;
+	el.push_back(c);
+	el.push_back(w);
+	Model model(el);
+	model.simulate(1000);
+}
+
+void lab2()
+{
+	//task_1_2();
+	task_3_4();
+	//task_5_6();
+}
+
+void lab3()
+{
+	std::cout << "Press 1 to choose the bank task and 2 to choose hospital" << std::endl;
+	int choice = _getch() - 48;
+
+	if (choice == 1) {
+		bank_second_way();
+		//bank_first_way();
+	}
+	else if (choice == 2) {
+		hospital();
+	}
+	//testWorkGroup();
+	//test();
+	//hospital();
+	//testTransition();
+}

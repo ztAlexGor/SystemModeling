@@ -13,6 +13,7 @@ private:
 	Element* event;
 public:
 	Model(const std::vector<Element*>& elements);
+	~Model();
 	void simulate(double time);
 private:
 	Info CollectInfo();

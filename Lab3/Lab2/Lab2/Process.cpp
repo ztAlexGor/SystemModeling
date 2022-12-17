@@ -1,5 +1,12 @@
 #include "Process.h"
 
+
+Process::~Process()
+{
+	for (auto e : queue)delete e;
+	if (currTask)delete currTask;
+}
+
 Process::Process()
 {
 	maxqueue = 0;
